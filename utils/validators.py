@@ -1,3 +1,4 @@
+from datetime import datetime
 def validate_patient_schema(data):
 
     required_fields = [
@@ -15,3 +16,6 @@ def validate_patient_schema(data):
     assert isinstance(data["name"], str)
     assert isinstance(data["dob"], str)
     assert isinstance(data["diagnosis"], str)
+
+def validate_dob_format(dob):
+    datetime.strptime(dob, "%Y-%m-%d")

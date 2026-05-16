@@ -1,14 +1,15 @@
+import io
 import requests
 
 BASE_URL = "http://127.0.0.1:8000"
 
-
 def test_invalid_file_upload():
-
+    file_data = io.BytesIO(b"dummy executable content")
     files = {
         "file": (
             "malware.exe",
-            b"fake-content"
+            file_data,
+            "application/octet-stream"
         )
     }
 
@@ -18,9 +19,5 @@ def test_invalid_file_upload():
     )
 
     assert response.status_code == 400
-
     data = response.json()
-
-    assert (
-        data["detail"] == "Unsupported file format. Only PDF files are allowed."
-    )
+    assert data["detail"] == "Unsupported file format"

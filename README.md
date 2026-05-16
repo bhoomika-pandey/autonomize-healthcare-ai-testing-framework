@@ -28,6 +28,7 @@ The solution simulates a healthcare AI system using FastAPI mock services and va
 | Runtime | Python |
 | CI/CD Ready | GitHub Actions |
 | Pipeline Compatibility | Jenkins, Azure DevOps |
+| Containerization | Docker |
 
 ---
 
@@ -36,17 +37,40 @@ The solution simulates a healthcare AI system using FastAPI mock services and va
 ```text
 autonomize-healthcare-ai-testing-framework/
 │
+├── .github/
+│   └── workflows/
+│       └── ci_pipeline.yml
+│
 ├── app/
+│   ├── __init__.py
+│   └── mock_api.py
+│
 ├── tests/
+│   ├── __init__.py
+│   ├── test_health_check.py
+│   ├── test_agent_integration.py
+│   ├── test_model_integration.py
+│   └── test_upload_validation.py
+│
 ├── utils/
+│   ├── __init__.py
+│   ├── api_client.py
+│   └── validators.py
+│
 ├── test_data/
+│
 ├── reports/
 │
 ├── README.md
 ├── TEST_STRATEGY.md
 ├── TEST_CASES.md
 ├── DEFECT_SUMMARY.md
-└── requirements.txt
+├── TEST_PRIORITIES.md
+├── requirements.txt
+├── pytest.ini
+├── Dockerfile
+├── .dockerignore
+└── .gitignore
 ```
 
 ---
@@ -187,6 +211,31 @@ The framework architecture is CI/CD compatible and can also be integrated with:
 - Azure DevOps pipelines
 - Docker-based execution environments
 
+---
+
+# Docker Support
+
+The framework supports Docker-based execution for consistent runtime environments.
+
+## Build Docker Image
+
+```bash
+docker build -t autonomize-healthcare-ai-testing-framework .
+```
+
+## Run Docker Container
+
+```bash
+docker run -p 8000:8000 autonomize-healthcare-ai-testing-framework
+```
+
+Swagger UI:
+
+```text
+http://127.0.0.1:8000/docs
+```
+---
+
 # AI Safety Considerations
 
 Additional validations included:
@@ -204,9 +253,9 @@ Additional validations included:
 Potential future improvements:
 
 - Playwright-based UI automation
-- Docker containerization
 - Jenkins pipeline integration
 - Azure DevOps pipeline integration
+- Kubernetes deployment support for scalable container orchestration
 - Authentication & authorization validation
 - Performance testing using JMeter
 - Real AI model integration

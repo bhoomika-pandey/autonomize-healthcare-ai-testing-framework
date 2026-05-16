@@ -2,10 +2,13 @@ from fastapi import FastAPI, HTTPException, UploadFile, File
 from pydantic import BaseModel
 
 app = FastAPI(
-    title="Healthcare AI Testing API",
+    title="Autonomize Healthcare AI Testing API",
     description="Mock APIs for AI healthcare testing assignment",
     version="1.0"
 )
+
+class SymptomRequest(BaseModel):
+    symptoms: str
 
 # ---------------------------------------
 # Mock Patient Database
@@ -32,11 +35,13 @@ mock_patient_db = {
 # ---------------------------------------
 
 @app.get("/")
-def health_check():
+def root():
+    return {"message": "Healthcare AI Testing API"}
 
-    return {
-        "message": "Healthcare AI Testing API is running"
-    }
+
+@app.get("/health")
+def health_check():
+    return {"status": "healthy"}
 
 
 # ---------------------------------------
@@ -45,9 +50,7 @@ def health_check():
 
 @app.get("/extract-patient/{patient_id}")
 def extract_patient(patient_id: str):
-
     if patient_id not in mock_patient_db:
-
         raise HTTPException(
             status_code=404,
             detail="Patient record not found"
@@ -60,17 +63,11 @@ def extract_patient(patient_id: str):
 # AI Risk Prediction API
 # ---------------------------------------
 
-class SymptomRequest(BaseModel):
-    symptoms: str
-
-
 @app.post("/predict-risk")
 def predict_risk(request: SymptomRequest):
-
     symptoms = request.symptoms.lower()
 
     if not symptoms.strip():
-
         raise HTTPException(
             status_code=400,
             detail="Symptoms cannot be empty"
@@ -79,11 +76,11 @@ def predict_risk(request: SymptomRequest):
     if "chest pain" in symptoms:
         risk = "high"
 
-    elif "headache" in symptoms:
-        risk = "low"
+    elif "fever" in symptoms:
+        risk = "medium"
 
     else:
-        risk = "medium"
+        risk = "low"
 
     return {
         "input_symptoms": request.symptoms,
@@ -96,18 +93,18 @@ def predict_risk(request: SymptomRequest):
 # ---------------------------------------
 
 @app.post("/upload-chart")
-async def upload_chart(file: UploadFile = File(...)):
+def upload_chart(file: UploadFile = File(...)):
 
-    allowed_extensions = [".pdf"]
+    allowed_extensions = ["pdf", "png", "jpg", "jpeg"]
 
-    if not file.filename.endswith(tuple(allowed_extensions)):
+    extension = file.filename.split(".")[-1].lower()
 
+    if extension not in allowed_extensions:
         raise HTTPException(
             status_code=400,
-            detail="Unsupported file format. Only PDF files are allowed."
+            detail="Unsupported file format"
         )
 
     return {
-        "filename": file.filename,
         "message": "File uploaded successfully"
     }
