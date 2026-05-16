@@ -34,7 +34,7 @@ The solution simulates a healthcare AI system using FastAPI mock services and va
 # Project Structure
 
 ```text
-healthcare-ai-testing-framework/
+autonomize-healthcare-ai-testing-framework/
 │
 ├── app/
 ├── tests/
@@ -110,7 +110,7 @@ The framework validates:
 
 ```bash
 git clone <repo_url>
-cd healthcare-ai-testing-framework
+cd autonomize-healthcare-ai-testing-framework
 ```
 
 ---

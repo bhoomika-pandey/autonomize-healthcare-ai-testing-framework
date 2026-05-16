@@ -1,4 +1,4 @@
-name: Healthcare AI Test Pipeline
+name: Autonomize Healthcare AI Test Pipeline
 
 on:
   push:
