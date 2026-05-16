@@ -1,21 +1,27 @@
 from datetime import datetime
-def validate_patient_schema(data):
+from jsonschema import validate
 
-    required_fields = [
+patient_schema = {
+    "type": "object",
+    "properties": {
+        "patient_id": {"type": "string"},
+        "name": {"type": "string"},
+        "dob": {"type": "string"},
+        "condition": {"type": "string"}
+    },
+    "required": [
         "patient_id",
         "name",
         "dob",
-        "diagnosis"
+        "condition"
     ]
+}
 
-    for field in required_fields:
-
-        assert field in data, f"{field} is missing"
-
-    assert isinstance(data["patient_id"], str)
-    assert isinstance(data["name"], str)
-    assert isinstance(data["dob"], str)
-    assert isinstance(data["diagnosis"], str)
+def validate_patient_schema(data):
+    validate(
+        instance=data,
+        schema=patient_schema
+    )
 
 def validate_dob_format(dob):
     datetime.strptime(dob, "%Y-%m-%d")
