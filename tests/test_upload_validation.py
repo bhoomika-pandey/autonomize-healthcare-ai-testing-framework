@@ -1,10 +1,14 @@
 import io
-import requests
+import pytest
+from utils.api_client import (
+    upload_file_request
+)
 
-BASE_URL = "http://127.0.0.1:8000"
-
+@pytest.mark.regression
 def test_invalid_file_upload():
-    file_data = io.BytesIO(b"dummy executable content")
+    file_data = io.BytesIO(
+        b"dummy executable content"
+    )
     files = {
         "file": (
             "malware.exe",
@@ -12,12 +16,66 @@ def test_invalid_file_upload():
             "application/octet-stream"
         )
     }
-
-    response = requests.post(
-        f"{BASE_URL}/upload-chart",
-        files=files
+    response = upload_file_request(
+        "/upload-chart",
+        files
     )
 
     assert response.status_code == 400
     data = response.json()
-    assert data["detail"] == "Unsupported file format"
+    assert (
+        data["detail"]
+        ==
+        "Unsupported file format"
+    )
+
+@pytest.mark.regression
+def test_empty_file_upload():
+    empty_file = io.BytesIO(b"")
+    files = {
+        "file": (
+            "empty.pdf",
+            empty_file,
+            "application/pdf"
+        )
+    }
+    response = upload_file_request(
+        "/upload-chart",
+        files
+    )
+
+    assert response.status_code == 400
+    data = response.json()
+    assert (
+        data["detail"]
+        ==
+        "Uploaded file is empty"
+    )
+
+@pytest.mark.regression
+def test_large_file_upload():
+    large_content = b"a" * (
+        6 * 1024 * 1024
+    )
+    large_file = io.BytesIO(
+        large_content
+    )
+    files = {
+        "file": (
+            "large.pdf",
+            large_file,
+            "application/pdf"
+        )
+    }
+    response = upload_file_request(
+        "/upload-chart",
+        files
+    )
+
+    assert response.status_code == 400
+    data = response.json()
+    assert (
+        data["detail"]
+        ==
+        "File size exceeds allowed limit"
+    )
