@@ -1,30 +1,21 @@
+
+import json
 from fastapi import (
     FastAPI,
     HTTPException,
     UploadFile,
     File
 )
-
 from fastapi.responses import HTMLResponse
 
 app = FastAPI()
 
+with open(
+    "test_data/patient_database.json",
+    "r"
+) as file:
 
-PATIENT_DATABASE = {
-    "P123": {
-        "patient_id": "P123",
-        "name": "John Doe",
-        "dob": "1990-01-01",
-        "condition": "Diabetes"
-    },
-    "P456": {
-        "patient_id": "P456",
-        "name": "Jane Smith",
-        "dob": "1985-05-12",
-        "condition": "Hypertension"
-    }
-}
-
+    PATIENT_DATABASE = json.load(file)
 
 @app.get("/")
 def home():
@@ -218,12 +209,9 @@ def health_check():
 @app.get("/extract-patient/{patient_id}")
 def extract_patient_data(patient_id: str):
 
-    patient_data = (
-        PATIENT_DATABASE.get(patient_id)
-    )
+    patient_data = (PATIENT_DATABASE.get(patient_id))
 
     if not patient_data:
-
         raise HTTPException(
             status_code=404,
             detail="Patient not found"
@@ -235,24 +223,15 @@ def extract_patient_data(patient_id: str):
 @app.post("/predict-risk")
 def predict_risk(payload: dict):
 
-    symptoms = (
-        payload.get("symptoms", "")
-        .lower()
-        .strip()
-    )
+    symptoms = payload.get("symptoms", "").lower().strip()
 
     if not symptoms:
-
         raise HTTPException(
             status_code=400,
             detail="Symptoms cannot be empty"
         )
 
-    if (
-        "ignore all instructions"
-        in symptoms
-    ):
-
+    if "ignore all instructions" in symptoms:
         raise HTTPException(
             status_code=400,
             detail=(
@@ -261,21 +240,13 @@ def predict_risk(payload: dict):
             )
         )
 
-    if (
-        "chest pain"
-        in symptoms
-    ):
-
+    if "chest pain" in symptoms:
         return {
             "risk_level": "high",
             "confidence": 0.95
         }
 
-    if (
-        "fever"
-        in symptoms
-    ):
-
+    if "fever" in symptoms:
         return {
             "risk_level": "medium",
             "confidence": 0.80
@@ -313,7 +284,6 @@ async def upload_medical_chart(
     content = await file.read()
 
     if not content:
-
         raise HTTPException(
             status_code=400,
             detail=(
@@ -321,10 +291,7 @@ async def upload_medical_chart(
             )
         )
 
-    if len(content) > (
-        5 * 1024 * 1024
-    ):
-
+    if len(content) > (5 * 1024 * 1024):
         raise HTTPException(
             status_code=400,
             detail=(
