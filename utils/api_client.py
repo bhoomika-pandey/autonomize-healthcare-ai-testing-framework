@@ -55,16 +55,12 @@ def post_request(endpoint, payload):
 
 def upload_file_request(endpoint, files):
     url = f"{BASE_URL}{endpoint}"
-    logger.info(
-        f"Uploading file to: {url}"
-    )
+    logger.info(f"Uploading file to: {url}")
     response = session.post(
         url,
         files=files,
         timeout=REQUEST_TIMEOUT
     )
-    logger.info(
-        f"Response Status: {response.status_code}"
-    )
+    logger.info(f"Response Status: {response.status_code}")
 
     return response
