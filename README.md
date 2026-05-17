@@ -59,9 +59,11 @@ autonomize-healthcare-ai-testing-framework/
 ├── utils/
 │   ├── __init__.py
 │   ├── api_client.py
+    │── logger.py
 │   └── validators.py
 │
 ├── test_data/
+│    └── patient_database.json
 │
 ├── reports/
 │
@@ -74,6 +76,7 @@ autonomize-healthcare-ai-testing-framework/
 ├── pytest.ini
 ├── Dockerfile
 ├── .dockerignore
+├── .env.example
 └── .gitignore
 ```
 
