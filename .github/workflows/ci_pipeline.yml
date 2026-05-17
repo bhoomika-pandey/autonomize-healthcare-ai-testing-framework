@@ -48,9 +48,10 @@ jobs:
           curl http://127.0.0.1:8000/docs
 
       - name: Run Pytest Automation
-        run: |
-          pytest -v --html=reports/report.html
-
+        env:
+          BASE_URL: http://127.0.0.1:8000
+          REQUEST_TIMEOUT: 10
+        run: pytest -v --html=reports/report.html
 
       - name: Upload HTML Report
         uses: actions/upload-artifact@v4
