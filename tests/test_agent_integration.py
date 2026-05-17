@@ -10,6 +10,9 @@ from utils.validators import (
 @pytest.mark.regression
 @pytest.mark.critical
 def test_extract_patient_success():
+
+    # Validate successful patient extraction and schema integrity.
+
     response = get_request("/extract-patient/P123")
 
     assert response.status_code == 200
@@ -22,6 +25,9 @@ def test_extract_patient_success():
 @pytest.mark.regression
 @pytest.mark.critical
 def test_extract_patient_not_found():
+
+    # Validate missing patient record handling behavior.
+
     response = get_request("/extract-patient/P800")
 
     assert response.status_code == 404
@@ -31,6 +37,9 @@ def test_extract_patient_not_found():
 
 @pytest.mark.regression
 def test_patient_dob_format():
+
+    # Validate extracted patient DOB format compliance.
+
     response = get_request("/extract-patient/P123")
 
     data = response.json()
@@ -40,6 +49,9 @@ def test_patient_dob_format():
 @pytest.mark.regression
 @pytest.mark.critical
 def test_cross_patient_data_isolation():
+
+    # Validate patient-data isolation between healthcare records.
+
     response_1 = get_request("/extract-patient/P123")
     response_2 = get_request("/extract-patient/P456")
 
@@ -51,6 +63,9 @@ def test_cross_patient_data_isolation():
 
 @pytest.mark.regression
 def test_missing_required_patient_fields():
+
+    # Validate detection of incomplete patient records.
+
     incomplete_patient = {
         "patient_id": "P789",
         "name": "Incomplete Patient"
@@ -61,6 +76,9 @@ def test_missing_required_patient_fields():
 
 @pytest.mark.regression
 def test_invalid_dob_format_detection():
+
+    # Validate invalid healthcare DOB format detection.
+
     invalid_patient = {
         "patient_id": "P999",
         "name": "Corrupted Patient",
@@ -73,6 +91,9 @@ def test_invalid_dob_format_detection():
 
 @pytest.mark.regression
 def test_malformed_patient_schema_detection():
+
+    # Validate malformed healthcare schema detection logic.
+
     malformed_patient = {
         "patient_identifier": "P111",
         "full_name": "Wrong Schema"
@@ -83,6 +104,9 @@ def test_malformed_patient_schema_detection():
 
 @pytest.mark.regression
 def test_partial_extraction_failure():
+
+    # Validate partially corrupted extraction-response handling.
+
     partial_patient = {
         "patient_id": "P222",
         "name": None,
@@ -95,6 +119,9 @@ def test_partial_extraction_failure():
 
 @pytest.mark.regression
 def test_corrupted_extraction_data():
+
+    # Validate corrupted healthcare extraction-data handling.
+    
     corrupted_patient = {
         "patient_id": 12345,
         "name": True,
