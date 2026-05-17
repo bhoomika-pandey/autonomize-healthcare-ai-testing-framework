@@ -22,7 +22,8 @@ The solution simulates a healthcare AI system using FastAPI mock services and va
 | Area | Tool |
 |---|---|
 | Backend Mock APIs | FastAPI |
-| Automation Framework | Pytest |
+| API Automation | Pytest |
+| UI Automation | Playwright |
 | API Requests | requests |
 | Reporting | pytest-html |
 | Runtime | Python |
@@ -51,6 +52,9 @@ autonomize-healthcare-ai-testing-framework/
 │   ├── test_agent_integration.py
 │   ├── test_model_integration.py
 │   └── test_upload_validation.py
+│
+├── playwright_tests/
+│   └── test_patient_ui.py
 │
 ├── utils/
 │   ├── __init__.py
@@ -113,18 +117,42 @@ Simulates:
 
 ---
 
+# Mock Healthcare UI
+
+A lightweight healthcare patient-intake UI is included to simulate:
+
+- Patient symptom submission
+- AI risk prediction workflows
+- Medical chart upload interactions
+- UI error-message validation
+
+UI Endpoint:
+
+```text
+http://127.0.0.1:8000/patient-intake-ui
+```
+
+The UI is used for Playwright-based end-to-end automation testing.
+
 # Test Coverage
 
 The framework validates:
 
 - Positive and negative API scenarios
+- Agent integration validation
+- Model integration validation
 - Schema validation
 - Nuanced patient input handling
 - Contradictory symptom handling
+- Ambiguous symptom handling
+- Prompt injection validation
+- Hallucination boundary validation
 - Privacy and cross-patient isolation
 - Upload validation scenarios
 - Error response validation
 - AI model robustness
+- UI responsiveness validation
+- Playwright end-to-end automation
 
 ---
 
@@ -179,10 +207,40 @@ http://127.0.0.1:8000/docs
 
 ---
 
-# Running Tests
+# Running FastAPI Server
+
+```bash
+uvicorn app.mock_api:app --reload
+```
+
+Swagger UI:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+Patient Intake UI:
+
+```text
+http://127.0.0.1:8000/patient-intake-ui
+```
+
+---
+
+# Running API Tests
 
 ```bash
 pytest -v
+```
+
+---
+
+# Running Playwright Tests
+
+Ensure FastAPI server is already running.
+
+```bash
+pytest playwright_tests -v
 ```
 
 ---
@@ -192,8 +250,6 @@ pytest -v
 ```bash
 pytest -v --html=reports/report.html
 ```
-
----
 
 # CI/CD Integration
 
@@ -244,6 +300,11 @@ Additional validations included:
 - Invalid payload handling
 - Nuanced symptom interpretation
 - Contradictory symptom testing
+- Ambiguous symptom handling
+- Prompt injection prevention
+- Hallucination boundary validation
+- Supported AI output enforcement
+- Confidence-score validation
 - Graceful handling of malformed inputs
 
 ---
@@ -252,15 +313,14 @@ Additional validations included:
 
 Potential future improvements:
 
-- Playwright-based UI automation
-- Jenkins pipeline integration
-- Azure DevOps pipeline integration
-- Kubernetes deployment support for scalable container orchestration
+- Kubernetes deployment manifests for scalable orchestration
 - Authentication & authorization validation
 - Performance testing using JMeter
-- Real AI model integration
-- Prompt injection testing
 - PHI masking validation
+- Real AI model integration
+- Advanced healthcare workflow orchestration
+- Load testing for concurrent patient workflows
+- Distributed execution support for large-scale regression suites
 
 ---
 

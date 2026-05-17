@@ -1,163 +1,268 @@
-# TEST STRATEGY
+# Healthcare AI Agentic Platform - Test Strategy
 
 # Objective
 
-The objective of this project is to validate the reliability, safety, and robustness of an AI-driven healthcare platform through automated API testing and AI-specific validation scenarios.
+The objective of this framework is to validate the reliability, safety, compliance, and robustness of an AI-driven healthcare Agentic Platform.
 
-The framework focuses on:
-- Agent Integration Testing
-- Model Integration Testing
-- Patient Safety Validation
-- Privacy Validation
-- Upload Validation
-- Risk-Based Testing
+The testing strategy focuses on:
+
+- Agent integration validation
+- AI model integration validation
+- Patient safety protections
+- Healthcare compliance considerations
+- UX/UI validation
+- AI safety and hallucination prevention
+- Privacy and data isolation
+- End-to-end automation readiness
 
 ---
 
 # Scope
 
-The following areas are covered:
+This framework validates the following healthcare AI workflows:
 
-| Area | Coverage |
+| Workflow | Description |
 |---|---|
-| Agent Integration Testing | Patient extraction validation |
-| Model Integration Testing | AI risk classification validation |
-| Upload Validation | Invalid medical chart upload scenarios |
-| Privacy Validation | Cross-patient data isolation |
-| AI Robustness Testing | Nuanced and malformed patient inputs |
-| Error Handling | Invalid payload and schema validation |
-
----
-
-# Testing Approach
-
-The project uses:
-- FastAPI mock services to simulate healthcare APIs
-- Pytest for automation execution
-- Reusable validation utilities for schema and response validation
-- Risk-based prioritization for patient safety critical scenarios
-
-The framework is designed to be CI/CD compatible and scalable for future enhancements.
+| Data Extraction Agent | Validation of structured healthcare data extraction |
+| AI Risk Classification Model | Validation of AI-generated medical risk predictions |
+| Medical Chart Upload Validation | Validation of upload integrity and error handling |
+| Patient Safety Controls | Validation of safe AI outputs and escalation behavior |
+| Privacy & Compliance | Validation of cross-patient isolation and data integrity |
 
 ---
 
 # Agent Integration Testing Strategy
 
-The patient extraction API simulates an AI agent responsible for retrieving and structuring healthcare data.
+Agent Integration Testing focuses on validating the behavior of the healthcare data extraction agent.
 
-Validation areas include:
-- Required field validation
+The following validations are included:
+
+- Patient data extraction validation
+- Schema validation
+- Data integrity verification
 - Data type validation
+- Format compliance validation
 - Missing patient handling
-- Schema integrity
 - Cross-patient data isolation
+- Response structure consistency
 
-Critical risks:
-- Missing patient information
-- Incorrect patient mapping
-- Patient data leakage
+## Key Risks Addressed
+
+| Risk | Mitigation |
+|---|---|
+| Incorrect patient extraction | Schema validation |
+| Missing mandatory fields | Response validation |
+| Cross-patient data leakage | Isolation testing |
+| Invalid healthcare formats | Format validation |
 
 ---
 
 # Model Integration Testing Strategy
 
-The AI risk prediction API simulates an AI model responsible for patient risk classification.
+Model Integration Testing focuses on validating AI inference behavior and prediction reliability.
+
+The following validations are included:
+
+- High-risk classification validation
+- Low-risk classification validation
+- Semantic variation handling
+- Nuanced patient input handling
+- Contradictory symptom handling
+- Missing symptom validation
+- Garbage input handling
+- Confidence-score validation
+- Hallucination boundary validation
+- Prompt injection prevention
+- Prediction consistency validation
+
+## Key Risks Addressed
+
+| Risk | Mitigation |
+|---|---|
+| Incorrect medical classification | Risk validation |
+| Unsafe hallucinated outputs | Output boundary validation |
+| Prompt injection attacks | Adversarial input testing |
+| Unstable AI predictions | Consistency testing |
+| Unsafe confidence levels | Confidence validation |
+
+---
+
+# Patient Safety Strategy
+
+Healthcare AI systems require strict patient-safety protections.
+
+This framework validates:
+
+- Safe escalation handling
+- Controlled risk classifications
+- Prevention of unsupported outputs
+- Stable model behavior
+- Prevention of fabricated medical classifications
+- Safe handling of ambiguous patient input
+
+## Patient Safety Goals
+
+| Goal | Validation |
+|---|---|
+| Prevent unsafe outputs | Boundary validation |
+| Prevent hallucinations | Allowed-risk enforcement |
+| Prevent inconsistent diagnoses | Consistency validation |
+| Prevent unsafe prompt manipulation | Injection testing |
+
+---
+
+# Privacy & Compliance Strategy
+
+Healthcare systems must protect patient privacy and maintain data integrity.
+
+The framework validates:
+
+- Cross-patient isolation
+- Structured schema validation
+- Secure data handling assumptions
+- Controlled upload validation
+- Invalid medical file rejection
+
+## Compliance Risks Addressed
+
+| Risk | Validation |
+|---|---|
+| Patient data leakage | Isolation testing |
+| Corrupted healthcare records | Upload validation |
+| Invalid schema structures | Schema enforcement |
+| Unsafe file uploads | Upload restrictions |
+
+---
+
+# UX/UI Validation Strategy
+
+The framework includes UX/UI-focused validation scenarios for healthcare interactions.
 
 Validation areas include:
-- Correct classification behavior
-- Nuanced symptom interpretation
-- Contradictory symptom handling
-- Empty and malformed input handling
-- Constrained response validation
 
-The framework intentionally validates acceptable behavior ranges instead of exact-text AI outputs.
+- Invalid medical chart uploads
+- Unsupported file format handling
+- Empty file handling
+- Large file rejection
+- Error message validation
+- User feedback consistency
 
----
+## UX Risks Addressed
 
-# AI-Specific Validation Considerations
-
-Traditional API testing focuses on deterministic responses.
-
-AI-system validation additionally requires:
-- semantic robustness testing
-- ambiguity handling
-- graceful degradation
-- hallucination-sensitive validation
-- acceptable output boundary validation
-
-The framework includes nuanced patient symptom scenarios to simulate real-world healthcare interactions.
+| Risk | Validation |
+|---|---|
+| Confusing upload failures | Error validation |
+| Unsafe uploads | File validation |
+| Poor user feedback | Error-message testing |
 
 ---
 
-# Patient Safety & Privacy Validation
+# Automation Strategy
 
-Healthcare systems require strong privacy and safety protections.
+The framework is fully automated using pytest.
 
-The following validations were incorporated:
-- Cross-patient data isolation checks
-- Invalid payload handling
-- Error response validation
-- Unsupported upload validation
-- Safe constrained risk classifications
+Capabilities include:
 
-Potential future improvements:
-- Authentication testing
-- Authorization validation
-- PHI masking validation
-- Audit log validation
+- Automated API validation
+- Automated AI validation
+- HTML reporting
+- CI/CD execution
+- Dockerized execution
+- Categorized pytest markers
+- Regression-ready execution
 
 ---
 
-# Risk-Based Prioritization
+# Test Execution Strategy
 
-| Scenario | Severity | Priority |
-|---|---|---|
-| Cross-patient data leakage | Critical | P0 |
-| Incorrect risk classification | Critical | P0 |
-| Invalid AI response structure | High | P1 |
-| Missing patient records | High | P1 |
-| Upload validation failure | Medium | P2 |
-| UI messaging clarity | Low | P3 |
+## Smoke Tests
+
+Validates critical application availability and core workflows.
+
+Example:
+- Health check validation
+- Critical risk prediction validation
+
+---
+
+## Regression Tests
+
+Validates full healthcare AI functionality and safety protections.
+
+Example:
+- Semantic robustness testing
+- Upload edge cases
+- Prompt injection prevention
+- Privacy validation
+
+---
+
+## Critical Tests
+
+Validates patient-safety-sensitive scenarios.
+
+Example:
+- High-risk escalation
+- Cross-patient isolation
+- Hallucination boundary validation
+
+---
+
+# AI Safety Strategy
+
+The framework incorporates AI-specific safety protections.
+
+These include:
+
+- Hallucination boundary validation
+- Prompt injection prevention
+- Semantic robustness validation
+- AI consistency testing
+- Controlled classification enforcement
+- Confidence-score validation
+
+---
+
+# CI/CD Strategy
+
+The framework supports CI/CD execution using:
+
+- GitHub Actions
+- Jenkins-compatible pipelines
+- Azure DevOps-compatible workflows
+
+Automated pipeline capabilities include:
+
+- Dependency installation
+- FastAPI startup
+- Automated pytest execution
+- HTML report generation
+- Artifact publishing
+
+---
+
+# Runtime Strategy
+
+The framework supports:
+
+- Local execution
+- Dockerized execution
+- Kubernetes-compatible deployment strategy
 
 ---
 
 # Reporting Strategy
 
 The framework generates:
-- pytest execution logs
-- HTML automation reports
-- defect summaries
-- regression testing recommendations
+
+- Pytest execution logs
+- HTML execution reports
+- Defect summaries
+- Regression recommendations
+- Risk-prioritized validation coverage
 
 ---
 
-# Limitations
+# Conclusion
 
-This project uses mocked APIs and simulated AI behavior.
-
-The focus of the assignment is:
-- QA methodology
-- automation framework design
-- AI-system validation strategy
-
-The project does not include:
-- production-grade AI models
-- real healthcare integrations
-- frontend implementation
-- authentication systems
-
----
-
-# Future Enhancements
-
-Potential future improvements:
-- Playwright-based UI automation
-- Docker containerization
-- GitHub Actions CI/CD integration
-- Jenkins pipeline integration
-- Azure DevOps pipeline integration
-- Performance testing using JMeter
-- Real AI model integration
-- Authentication & authorization testing
-- PHI masking validation
-- Prompt injection testing
+This framework provides a structured methodology for validating healthcare AI agentic workflows, AI model integrations, patient safety protections, compliance requirements, and healthcare data integrity using automated testing practices.
