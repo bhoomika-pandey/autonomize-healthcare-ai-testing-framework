@@ -1,0 +1,14 @@
+{
+    "P123": {
+        "patient_id": "P123",
+        "name": "John Doe",
+        "dob": "1990-01-01",
+        "condition": "Diabetes"
+    },
+    "P456": {
+        "patient_id": "P456",
+        "name": "Jane Smith",
+        "dob": "1985-05-12",
+        "condition": "Hypertension"
+    }
+}
