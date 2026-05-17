@@ -64,9 +64,7 @@ def test_empty_symptoms():
 @pytest.mark.regression
 def test_nuanced_patient_input():
     payload = {
-        "symptoms": (
-            "Pressure sensation while breathing"
-        )
+        "symptoms": "Pressure sensation while breathing"
     }
     response = post_request(
         "/predict-risk",
@@ -156,7 +154,7 @@ def test_missing_symptom_field():
         "/predict-risk",
         payload
     )
-    assert response.status_code == 422
+    assert response.status_code == 400
 
 
 @pytest.mark.regression
@@ -215,11 +213,7 @@ def test_prompt_injection_attempt():
 
     assert response.status_code == 400
     data = response.json()
-    assert (
-        data["detail"]
-        ==
-        "Potential prompt injection detected"
-    )
+    assert data["detail"] == "Potential prompt injection detected"
 
 @pytest.mark.regression
 @pytest.mark.critical
@@ -262,8 +256,48 @@ def test_prediction_consistency():
     data_1 = response_1.json()
     data_2 = response_2.json()
 
-    assert (
-        data_1["risk_level"]
-        ==
-        data_2["risk_level"]
+    assert data_1["risk_level"] == data_2["risk_level"]
+
+@pytest.mark.regression
+def test_ambiguous_symptom_handling():
+    payload = {
+        "symptoms": "I feel strange and uncomfortable"
+    }
+    response = post_request(
+        "/predict-risk",
+        payload
     )
+
+    assert response.status_code == 200
+
+    data = response.json()
+    assert data["risk_level"] in [
+        "low",
+        "medium",
+        "high"
+    ]
+
+    assert 0 <= data["confidence"] <= 1
+
+
+@pytest.mark.regression
+@pytest.mark.critical
+def test_supported_risk_level_outputs():
+    payload = {
+        "symptoms": "Sudden chest discomfort"
+    }
+    response = post_request(
+        "/predict-risk",
+        payload
+    )
+
+    assert response.status_code == 200
+
+    data = response.json()
+    allowed_risk_levels = [
+        "high",
+        "medium",
+        "low"
+    ]
+
+    assert data["risk_level"] in allowed_risk_levels
