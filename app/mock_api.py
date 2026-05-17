@@ -1,20 +1,16 @@
-from fastapi import FastAPI, HTTPException, UploadFile, File
-from pydantic import BaseModel
-
-app = FastAPI(
-    title="Autonomize Healthcare AI Testing API",
-    description="Mock APIs for AI healthcare testing assignment",
-    version="1.0"
+from fastapi import (
+    FastAPI,
+    HTTPException,
+    UploadFile,
+    File
 )
 
-class RiskRequest(BaseModel):
-    symptoms: str
+from fastapi.responses import HTMLResponse
+
+app = FastAPI()
 
 
-# Mock Patient Database
-# ---------------------
-
-mock_patient_db = {
+PATIENT_DATABASE = {
     "P123": {
         "patient_id": "P123",
         "name": "John Doe",
@@ -23,101 +19,321 @@ mock_patient_db = {
     },
     "P456": {
         "patient_id": "P456",
-        "name": "Alice Smith",
+        "name": "Jane Smith",
         "dob": "1985-05-12",
         "condition": "Hypertension"
     }
 }
 
-# Health Check API
-# ----------------
 
 @app.get("/")
-def root():
-    return {"message": "Healthcare AI Testing API"}
+def home():
+
+    return {
+        "message": (
+            "Healthcare AI Agentic "
+            "Testing Platform"
+        )
+    }
+
+
+@app.get(
+    "/patient-intake-ui",
+    response_class=HTMLResponse
+)
+def patient_intake_ui():
+
+    return """
+    <!DOCTYPE html>
+
+    <html>
+
+    <head>
+        <title>
+            Patient Intake Portal
+        </title>
+
+        <style>
+
+            body {
+                font-family: Arial;
+                margin: 40px;
+            }
+
+            input, textarea {
+                width: 400px;
+                margin-bottom: 10px;
+                padding: 8px;
+            }
+
+            button {
+                padding: 10px 20px;
+            }
+
+            .response {
+                margin-top: 20px;
+                font-weight: bold;
+            }
+
+            .error {
+                color: red;
+            }
+
+        </style>
+    </head>
+
+    <body>
+
+        <h1>
+            Patient Intake Portal
+        </h1>
+
+        <textarea
+            id="symptoms"
+            placeholder="Enter symptoms"
+        ></textarea>
+
+        <br>
+
+        <button onclick="submitSymptoms()">
+            Submit Symptoms
+        </button>
+
+        <br><br>
+
+        <input
+            type="file"
+            id="medicalFile"
+        />
+
+        <button onclick="uploadFile()">
+            Upload Medical Chart
+        </button>
+
+        <div
+            id="response"
+            class="response"
+        ></div>
+
+        <script>
+
+            async function submitSymptoms() {
+
+                const symptoms =
+                    document.getElementById(
+                        "symptoms"
+                    ).value;
+
+                const response = await fetch(
+                    "/predict-risk",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                            "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            symptoms: symptoms
+                        })
+                    }
+                );
+
+                const data =
+                    await response.json();
+
+                document.getElementById(
+                    "response"
+                ).innerHTML =
+                    "Risk Level: "
+                    + data.risk_level;
+            }
+
+
+            async function uploadFile() {
+
+                const fileInput =
+                    document.getElementById(
+                        "medicalFile"
+                    );
+
+                const file =
+                    fileInput.files[0];
+
+                const formData =
+                    new FormData();
+
+                formData.append(
+                    "file",
+                    file
+                );
+
+                const response =
+                    await fetch(
+                        "/upload-chart",
+                        {
+                            method: "POST",
+                            body: formData
+                        }
+                    );
+
+                const data =
+                    await response.json();
+
+                if (response.status !== 200) {
+
+                    document.getElementById(
+                        "response"
+                    ).innerHTML =
+                        "<span class='error'>"
+                        + data.detail +
+                        "</span>";
+
+                } else {
+
+                    document.getElementById(
+                        "response"
+                    ).innerHTML =
+                        "Upload Successful";
+                }
+            }
+
+        </script>
+
+    </body>
+
+    </html>
+    """
 
 
 @app.get("/health")
 def health_check():
-    return {"status": "healthy"}
 
-# Patient Extraction API
-# ----------------------
+    return {
+        "status": "healthy"
+    }
+
 
 @app.get("/extract-patient/{patient_id}")
-def extract_patient(patient_id: str):
-    if patient_id not in mock_patient_db:
+def extract_patient_data(patient_id: str):
+
+    patient_data = (
+        PATIENT_DATABASE.get(patient_id)
+    )
+
+    if not patient_data:
+
         raise HTTPException(
             status_code=404,
-            detail="Patient record not found"
+            detail="Patient not found"
         )
 
-    return mock_patient_db[patient_id]
+    return patient_data
 
-# AI Risk Prediction API
-# ----------------------
 
 @app.post("/predict-risk")
-def predict_risk(request: RiskRequest):
-    symptoms = request.symptoms.strip().lower()
+def predict_risk(payload: dict):
+
+    symptoms = (
+        payload.get("symptoms", "")
+        .lower()
+        .strip()
+    )
 
     if not symptoms:
+
         raise HTTPException(
             status_code=400,
             detail="Symptoms cannot be empty"
         )
-    
-    if "ignore all instructions" in symptoms:
+
+    if (
+        "ignore all instructions"
+        in symptoms
+    ):
+
         raise HTTPException(
             status_code=400,
-            detail="Potential prompt injection detected"
+            detail=(
+                "Potential prompt "
+                "injection detected"
+            )
         )
 
-    if "chest pain" in symptoms:
-        risk = "high"
-        confidence = 0.95
+    if (
+        "chest pain"
+        in symptoms
+    ):
 
-    elif "fever" in symptoms:
-        risk = "medium"
-        confidence = 0.75
+        return {
+            "risk_level": "high",
+            "confidence": 0.95
+        }
 
-    else:
-        risk = "low"
-        confidence = 0.60
+    if (
+        "fever"
+        in symptoms
+    ):
+
+        return {
+            "risk_level": "medium",
+            "confidence": 0.80
+        }
 
     return {
-        "risk_level": risk,
-        "confidence": confidence
+        "risk_level": "low",
+        "confidence": 0.60
     }
 
-# Upload Validation API
-# ---------------------
 
 @app.post("/upload-chart")
-def upload_chart(file: UploadFile = File(...)):
-    allowed_extensions = ["pdf", "png", "jpg", "jpeg"]
-    extension = file.filename.split(".")[-1].lower()
+async def upload_medical_chart(
+    file: UploadFile = File(...)
+):
 
-    if extension not in allowed_extensions:
+    allowed_extensions = [
+        ".pdf",
+        ".png",
+        ".jpg"
+    ]
+
+    if not any(
+        file.filename.endswith(ext)
+        for ext in allowed_extensions
+    ):
+
         raise HTTPException(
             status_code=400,
-            detail="Unsupported file format"
+            detail=(
+                "Unsupported file format"
+            )
         )
-    
-    content = file.file.read()
 
-    if len(content) == 0:
+    content = await file.read()
+
+    if not content:
+
         raise HTTPException(
             status_code=400,
-            detail="Uploaded file is empty"
+            detail=(
+                "Uploaded file is empty"
+            )
         )
 
-    if len(content) > 5 * 1024 * 1024:
+    if len(content) > (
+        5 * 1024 * 1024
+    ):
+
         raise HTTPException(
             status_code=400,
-            detail="File size exceeds allowed limit"
+            detail=(
+                "File size exceeds "
+                "allowed limit"
+            )
         )
 
     return {
-        "message": "File uploaded successfully"
+        "message":
+        "File uploaded successfully"
     }
