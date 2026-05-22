@@ -142,6 +142,8 @@ Validation areas include:
 
 - Invalid medical chart uploads
 - Unsupported file format handling
+- Empty symptoms submission handling
+- No file selected upload warning
 - Empty file handling
 - Large file rejection
 - Error message validation
@@ -153,7 +155,9 @@ Validation areas include:
 |---|---|
 | Confusing upload failures | Error validation |
 | Unsafe uploads | File validation |
+| Missing user input | Empty field handling |
 | Poor user feedback | Error-message testing |
+| Invalid submission state | Client-side validation |
 
 ---
 

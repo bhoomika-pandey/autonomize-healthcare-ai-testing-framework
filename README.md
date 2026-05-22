@@ -15,6 +15,12 @@ The framework focuses on:
 
 The solution simulates a healthcare AI system using FastAPI mock services and validates system behavior using pytest automation.
 
+The framework now also includes a lightweight complete workflow layer and
+Behave BDD scenarios so validation is not limited to a single agent. The
+workflow covers patient extraction, schema validation, risk classification,
+model safety, escalation, chart upload validation, privacy checks, and audit
+evidence.
+
 ---
 
 # Tech Stack
@@ -24,6 +30,7 @@ The solution simulates a healthcare AI system using FastAPI mock services and va
 | Backend Mock APIs | FastAPI |
 | API Automation | Pytest |
 | UI Automation | Playwright |
+| BDD Automation | Behave |
 | API Requests | requests |
 | Reporting | pytest-html |
 | Runtime | Python |
@@ -196,19 +203,6 @@ pip install -r requirements.txt
 
 ---
 
-# Running FastAPI Server
-
-```bash
-uvicorn app.mock_api:app --reload
-```
-
-Swagger UI:
-
-```text
-http://127.0.0.1:8000/docs
-```
-
----
 
 # Running FastAPI Server
 
@@ -245,6 +239,41 @@ Ensure FastAPI server is already running.
 ```bash
 pytest playwright_tests -v
 ```
+
+---
+
+# Running BDD Workflow Tests
+
+```bash
+behave
+```
+
+Primary BDD workflow:
+
+```text
+features/patient_intake_workflow.feature
+```
+
+---
+
+# Complete Workflow Coverage
+
+The complete patient workflow is implemented in:
+
+```text
+app/workflow_engine.py
+```
+
+It validates the end-to-end journey across:
+
+- Patient extraction
+- Schema validation
+- AI model risk classification
+- Prompt-injection safety checks
+- Clinical escalation
+- Medical chart upload validation
+- Privacy boundary validation
+- Audit event generation
 
 ---
 
