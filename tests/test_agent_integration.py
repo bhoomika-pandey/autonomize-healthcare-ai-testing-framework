@@ -1,10 +1,12 @@
 import pytest
-from jsonschema.exceptions import ValidationError
+
 from utils.api_client import get_request
 from utils.validators import (
-    validate_patient_schema, 
-    validate_dob_format
+    ValidationError,
+    validate_dob_format,
+    validate_patient_schema,
 )
+
 
 @pytest.mark.smoke
 @pytest.mark.regression
@@ -46,6 +48,7 @@ def test_patient_dob_format():
 
     validate_dob_format(data["dob"])
 
+
 @pytest.mark.regression
 @pytest.mark.critical
 def test_cross_patient_data_isolation():
@@ -61,18 +64,17 @@ def test_cross_patient_data_isolation():
     assert patient_1["patient_id"] != patient_2["patient_id"]
     assert patient_1["name"] != patient_2["name"]
 
+
 @pytest.mark.regression
 def test_missing_required_patient_fields():
 
     # Validate detection of incomplete patient records.
 
-    incomplete_patient = {
-        "patient_id": "P789",
-        "name": "Incomplete Patient"
-    }
+    incomplete_patient = {"patient_id": "P789", "name": "Incomplete Patient"}
 
     with pytest.raises(ValidationError):
         validate_patient_schema(incomplete_patient)
+
 
 @pytest.mark.regression
 def test_invalid_dob_format_detection():
@@ -83,24 +85,23 @@ def test_invalid_dob_format_detection():
         "patient_id": "P999",
         "name": "Corrupted Patient",
         "dob": "12-31-1990",
-        "condition": "Asthma"
+        "condition": "Asthma",
     }
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValidationError):
         validate_dob_format(invalid_patient["dob"])
+
 
 @pytest.mark.regression
 def test_malformed_patient_schema_detection():
 
     # Validate malformed healthcare schema detection logic.
 
-    malformed_patient = {
-        "patient_identifier": "P111",
-        "full_name": "Wrong Schema"
-    }
+    malformed_patient = {"patient_identifier": "P111", "full_name": "Wrong Schema"}
 
     with pytest.raises(ValidationError):
         validate_patient_schema(malformed_patient)
+
 
 @pytest.mark.regression
 def test_partial_extraction_failure():
@@ -111,22 +112,23 @@ def test_partial_extraction_failure():
         "patient_id": "P222",
         "name": None,
         "dob": "1995-02-01",
-        "condition": "Hypertension"
+        "condition": "Hypertension",
     }
 
     with pytest.raises(ValidationError):
         validate_patient_schema(partial_patient)
 
+
 @pytest.mark.regression
 def test_corrupted_extraction_data():
 
     # Validate corrupted healthcare extraction-data handling.
-    
+
     corrupted_patient = {
         "patient_id": 12345,
         "name": True,
         "dob": "invalid-date",
-        "condition": []
+        "condition": [],
     }
 
     with pytest.raises(ValidationError):

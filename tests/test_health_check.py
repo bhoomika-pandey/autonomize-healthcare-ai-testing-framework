@@ -1,5 +1,7 @@
 import pytest
+
 from utils.api_client import get_request
+
 
 @pytest.mark.smoke
 @pytest.mark.regression
