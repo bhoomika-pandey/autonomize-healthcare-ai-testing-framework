@@ -26,33 +26,24 @@ def prompt_injection_symptoms():
 
 @pytest.fixture
 def valid_chart_payload():
-    return {
-        "chart_file_name": "chart.pdf",
-        "chart_file_size_bytes": 2048
-    }
+    return {"chart_file_name": "chart.pdf", "chart_file_size_bytes": 2048}
 
 
 @pytest.fixture
-def valid_workflow_payload(
-    valid_patient_id,
-    high_risk_symptoms,
-    valid_chart_payload
-):
+def valid_workflow_payload(valid_patient_id, high_risk_symptoms, valid_chart_payload):
     return {
         "patient_id": valid_patient_id,
         "symptoms": high_risk_symptoms,
-        **valid_chart_payload
+        **valid_chart_payload,
     }
 
 
 @pytest.fixture
 def prompt_injection_workflow_payload(
-    valid_patient_id,
-    prompt_injection_symptoms,
-    valid_chart_payload
+    valid_patient_id, prompt_injection_symptoms, valid_chart_payload
 ):
     return {
         "patient_id": valid_patient_id,
         "symptoms": prompt_injection_symptoms,
-        **valid_chart_payload
+        **valid_chart_payload,
     }

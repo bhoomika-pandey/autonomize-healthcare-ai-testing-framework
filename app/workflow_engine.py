@@ -4,7 +4,6 @@ from pathlib import Path
 
 from jsonschema import FormatChecker, validate
 
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 PATIENT_DB_PATH = BASE_DIR / "test_data" / "patient_database.json"
 PATIENT_SCHEMA_PATH = BASE_DIR / "app" / "schemas" / "patient_schema.json"
@@ -46,11 +45,7 @@ def extract_patient(patient_id):
 
 def validate_patient(patient):
     schema = load_patient_schema()
-    validate(
-        instance=patient,
-        schema=schema,
-        format_checker=FormatChecker()
-    )
+    validate(instance=patient, schema=schema, format_checker=FormatChecker())
 
     return {
         "schema_valid": True,
@@ -137,8 +132,7 @@ def validate_chart_upload(file_name, file_size_bytes):
 
     normalized_name = file_name.lower()
     has_allowed_extension = any(
-        normalized_name.endswith(extension)
-        for extension in ALLOWED_UPLOAD_EXTENSIONS
+        normalized_name.endswith(extension) for extension in ALLOWED_UPLOAD_EXTENSIONS
     )
 
     if not has_allowed_extension:
@@ -183,10 +177,7 @@ def validate_privacy_boundary(requested_patient_id, patient):
 
 
 def run_patient_intake_workflow(
-    patient_id,
-    symptoms,
-    chart_file_name,
-    chart_file_size_bytes
+    patient_id, symptoms, chart_file_name, chart_file_size_bytes
 ):
     # Allow injection of components for easier testing and swapping implementations.
     return run_patient_intake_workflow_with_components(
