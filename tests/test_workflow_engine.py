@@ -1,6 +1,5 @@
 import app.workflow_engine as we
 
-
 sample_patient = {
     "patient_id": "P001",
     "name": "Alice",
@@ -10,7 +9,10 @@ sample_patient = {
 
 
 def validator_stub(patient):
-    return {"schema_valid": True, "validated_fields": ["patient_id", "name", "dob", "condition"]}
+    return {
+        "schema_valid": True,
+        "validated_fields": ["patient_id", "name", "dob", "condition"],
+    }
 
 
 def predictor_low(symptoms):

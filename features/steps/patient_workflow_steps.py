@@ -1,4 +1,4 @@
-from behave import given, when, then
+from behave import given, then, when
 
 from app.workflow_engine import extract_patient
 
@@ -20,17 +20,19 @@ def step_run_complete_workflow(context, symptoms, chart_file_name):
         patient_id=context.patient_id,
         symptoms=symptoms,
         chart_file_name=chart_file_name,
-        chart_file_size_bytes=2048
+        chart_file_size_bytes=2048,
     )
 
 
-@when('the complete patient workflow runs with empty symptoms and chart "{chart_file_name}"')
+@when(
+    'the complete patient workflow runs with empty symptoms and chart "{chart_file_name}"'
+)
 def step_run_complete_workflow_empty_symptoms(context, chart_file_name):
     context.workflow_result = context.run_patient_intake_workflow(
         patient_id=context.patient_id,
         symptoms="",
         chart_file_name=chart_file_name,
-        chart_file_size_bytes=2048
+        chart_file_size_bytes=2048,
     )
 
 
@@ -41,7 +43,7 @@ def step_run_missing_patient_workflow(context, patient_id):
         patient_id=patient_id,
         symptoms="Severe chest pain",
         chart_file_name="chart.pdf",
-        chart_file_size_bytes=2048
+        chart_file_size_bytes=2048,
     )
 
 
