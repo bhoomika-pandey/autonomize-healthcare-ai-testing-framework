@@ -1,0 +1,28 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "patient_id": {
+      "type": "string",
+      "pattern": "^P[0-9]{3,}$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "dob": {
+      "type": "string",
+      "format": "date"
+    },
+    "condition": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "patient_id",
+    "name",
+    "dob",
+    "condition"
+  ]
+}
