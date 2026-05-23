@@ -19,15 +19,17 @@ The testing strategy focuses on:
 
 # Scope
 
-This framework validates the following healthcare AI workflows:
+This framework validates the following healthcare AI workflow orchestration stages:
 
-| Workflow | Description |
+| Workflow Stage | Description |
 |---|---|
-| Data Extraction Agent | Validation of structured healthcare data extraction |
-| AI Risk Classification Model | Validation of AI-generated medical risk predictions |
-| Medical Chart Upload Validation | Validation of upload integrity and error handling |
-| Patient Safety Controls | Validation of safe AI outputs and escalation behavior |
-| Privacy & Compliance | Validation of cross-patient isolation and data integrity |
+| Patient Intake Workflow | Validation of patient symptom submission and workflow initiation |
+| Patient Extraction Workflow | Validation of structured healthcare payload extraction and schema validation |
+| AI Risk Classification Workflow | Validation of AI-driven healthcare risk predictions and confidence scoring |
+| Medical Upload Validation Workflow | Validation of medical chart upload integrity and file safety handling |
+| Patient Safety & Escalation Workflow | Validation of safe AI outputs, escalation handling, and workflow safety boundaries |
+| Privacy & Compliance Validation | Validation of cross-patient isolation, data integrity, and privacy protections |
+| End-to-End Workflow Orchestration | Validation of workflow sequencing, transition integrity, and healthcare workflow continuity |
 
 ---
 
@@ -136,7 +138,7 @@ The framework validates:
 
 # UX/UI Validation Strategy
 
-The framework includes UX/UI-focused validation scenarios for healthcare interactions.
+The framework includes Playwright-based UX/UI workflow validation scenarios for healthcare workflow interactions and patient-facing validation flows.
 
 Validation areas include:
 
@@ -148,6 +150,10 @@ Validation areas include:
 - Large file rejection
 - Error message validation
 - User feedback consistency
+- Patient workflow submission journeys
+- Workflow response validation
+- Healthcare workflow interaction consistency
+- End-to-end UI workflow execution
 
 ## UX Risks Addressed
 
@@ -163,25 +169,48 @@ Validation areas include:
 
 # Automation Strategy
 
-The framework is fully automated using pytest.
+The framework uses a multi-layer automation approach combining Pytest, Behave BDD workflows, Playwright UI automation, and workflow-oriented validation strategies.
 
 Capabilities include:
 
-- Automated API validation
-- Automated AI validation
+- Automated healthcare workflow validation
+- Behave BDD workflow orchestration testing
+- Playwright-based UI workflow automation
+- AI safety and adversarial validation
 - HTML reporting
 - CI/CD execution
 - Dockerized execution
-- Categorized pytest markers
-- Regression-ready execution
+- Categorized Pytest-based workflow execution
+- Regression-ready workflow validation
+- Automated code quality validation using pre-commit
 
+---
+
+# BDD Workflow Strategy
+
+The framework uses Behave BDD workflows to validate complete healthcare workflow orchestration scenarios across patient intake, schema validation, AI risk classification, escalation handling, upload validation, and AI safety protections.
+
+BDD workflows are designed to validate:
+
+- Workflow sequencing integrity
+- Patient workflow continuity
+- Escalation workflow behavior
+- Workflow transition validation
+- End-to-end healthcare workflow execution
+- Business-readable healthcare workflow scenarios
+
+Primary workflow coverage includes:
+
+```text
+features/patient_intake_workflow.feature
+```
 ---
 
 # Test Execution Strategy
 
 ## Smoke Tests
 
-Validates critical application availability and core workflows.
+Validates critical healthcare workflow availability, orchestration readiness, and core patient workflow execution.
 
 Example:
 - Health check validation
@@ -191,7 +220,7 @@ Example:
 
 ## Regression Tests
 
-Validates full healthcare AI functionality and safety protections.
+Validates complete healthcare workflow orchestration, AI safety protections, workflow transitions, and end-to-end validation coverage.
 
 Example:
 - Semantic robustness testing
@@ -203,12 +232,13 @@ Example:
 
 ## Critical Tests
 
-Validates patient-safety-sensitive scenarios.
+Validates patient-safety-sensitive workflows, escalation integrity, and AI safety protections.
 
 Example:
 - High-risk escalation
 - Cross-patient isolation
 - Hallucination boundary validation
+- Workflow escalation integrity
 
 ---
 
@@ -237,33 +267,41 @@ The framework supports CI/CD execution using:
 
 Automated pipeline capabilities include:
 
-- Dependency installation
-- FastAPI startup
-- Automated pytest execution
-- HTML report generation
+- Dependency installation and environment setup
+- FastAPI healthcare workflow service startup
+- Automated Pytest workflow validation
+- Behave BDD workflow execution
+- Playwright UI workflow automation
+- HTML workflow reporting
+- Automated code quality validation using pre-commit
 - Artifact publishing
 
 ---
 
 # Runtime Strategy
 
-The framework supports:
+The framework supports flexible execution strategies for healthcare workflow automation and orchestration validation across local, containerized, and scalable execution environments.
 
-- Local execution
-- Dockerized execution
-- Kubernetes-compatible deployment strategy
+Supported runtime environments include:
+
+- Local workflow validation execution
+- Dockerized healthcare workflow automation
+- Kubernetes-compatible workflow orchestration deployment strategies
 
 ---
 
 # Reporting Strategy
 
-The framework generates:
+The framework generates workflow-oriented validation and execution reports across healthcare workflow automation, AI safety validation, and orchestration testing.
 
-- Pytest execution logs
-- HTML execution reports
+Generated reporting artifacts include:
+
+- Pytest workflow execution logs
+- HTML workflow validation reports
 - Defect summaries
 - Regression recommendations
-- Risk-prioritized validation coverage
+- Risk-prioritized healthcare workflow coverage
+- Workflow validation traceability evidence
 
 ---
 

@@ -10,5 +10,23 @@
         "name": "Jane Smith",
         "dob": "1985-05-12",
         "condition": "Hypertension"
+    },
+    "P789": {
+    "patient_id": "P789",
+    "name": "Robert Wilson",
+    "dob": "1942-11-08",
+    "condition": "Cardiovascular Disease"
+    },
+    "P321": {
+        "patient_id": "P321",
+        "name": "Emily Davis",
+        "dob": "1975-03-22",
+        "condition": "Asthma"
+    },
+    "P654": {
+        "patient_id": "P654",
+        "name": "Michael Brown",
+        "dob": "1968-07-15",
+        "condition": "Unknown"
     }
 }

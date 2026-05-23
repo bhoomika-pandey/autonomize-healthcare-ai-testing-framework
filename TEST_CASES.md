@@ -2,13 +2,18 @@
 
 # Overview
 
-This document contains detailed test cases for validating the AI healthcare testing framework.
+This document contains detailed test cases for validating healthcare workflow orchestration, AI safety behavior, workflow transitions, and patient-safety-sensitive validation scenarios within the healthcare AI testing framework.
 
 The test suite covers:
-- Agent Integration Testing
-- Model Integration Testing
-- Upload Validation
-- Privacy & Patient Safety Validation
+
+- End-to-end healthcare workflow validation
+- Workflow orchestration and transition validation
+- Agent and model integration testing
+- Behave BDD workflow validation
+- Playwright UI workflow automation
+- AI safety and adversarial validation
+- Upload validation workflows
+- Privacy, escalation, and patient-safety validation
 
 ---
 
@@ -592,22 +597,29 @@ The test suite covers:
 # Regression Testing Recommendations
 
 The following areas should always be included in regression cycles:
-- Risk classification validation
-- Privacy and data isolation
-- Upload validation
+
+- Healthcare workflow orchestration validation
+- Workflow transition integrity validation
+- AI risk classification validation
+- Privacy and cross-patient isolation validation
+- Upload validation workflows
 - Schema validation
-- Error handling
-- AI semantic robustness
+- Escalation workflow validation
+- Error handling validation
+- AI semantic robustness validation
+- Prompt injection and AI safety validation
+- Playwright UI workflow validation
 
 ---
 
-# Suggested Future Test Cases
+Potential future workflow validation enhancements:
 
-Potential future enhancements:
-- Authentication validation
-- Authorization testing
-- PHI masking validation
-- Audit log verification
-- Load and performance testing
-- Prompt injection testing
-- Real AI model validation
+- Authentication and role-based healthcare access validation
+- PHI masking and sensitive healthcare data validation
+- Advanced audit workflow verification
+- Concurrent healthcare workflow execution testing
+- Load and performance testing for workflow orchestration
+- Distributed workflow execution validation
+- Real AI/LLM healthcare model integration testing
+- Advanced workflow state-management validation
+- Workflow resiliency and recovery testing
